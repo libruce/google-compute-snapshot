@@ -108,17 +108,17 @@ getInstanceZone()
 # RETURNS LIST OF DEVICES
 #
 # input: ${INSTANCE_NAME}
-# input: ${USER_INPUT_DEVICE_NAME}
 #
 
 getDeviceList()
 {
-    if [ $2 != "" ]; then
-      logTime "device name: $2"
-      echo "$(gcloud compute disks list --filter=name:$2)"
-    else
-      echo "$(gcloud compute disks list --filter users~$1 --format='value(name)')"
-    fi
+    # if [ $2 != "" ]; then
+    #   logTime "device name: $2"
+    #   echo "$(gcloud compute disks list --filter=name:$2)"
+    # else
+    #   echo "$(gcloud compute disks list --filter users~$1 --format='value(name)')"
+    # fi
+    echo "$(gcloud compute disks list --filter=name:prod-app-new-disc)"
 
 }
 
@@ -289,7 +289,7 @@ createSnapshotWrapper()
     INSTANCE_ZONE=$(getInstanceZone)
 
     # get a list of all the devices
-    DEVICE_LIST=$(getDeviceList ${INSTANCE_NAME} ${USER_INPUT_DEVICE_NAME})
+    DEVICE_LIST=$(getDeviceList ${INSTANCE_NAME})
 
     # create the snapshots
     echo "${DEVICE_LIST}" | while read DEVICE_NAME
