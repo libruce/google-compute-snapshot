@@ -59,7 +59,7 @@ setScriptOptions()
       OLDER_THAN=7
     fi
 
-    if [[ -n $opt_n ]];then
+    if [[ $opt_n ]];then
       USER_INPUT_DEVICE_NAME=$opt_n
     else
       USER_INPUT_DEVICE_NAME=""
@@ -115,8 +115,9 @@ getDeviceList()
     if [ USER_INPUT_DEVICE_NAME != "" ]; then
       echo "$(gcloud compute disks list --filter users~$1 --format='value(name)')"
     else
-      echo "$(gcloud compute disks list --filter='name:USER_INPUT_DEVICE_NAME')"
+      echo "$(gcloud compute disks list --filter='name:${USER_INPUT_DEVICE_NAME}')"
     fi
+    logtime "device name: ${USER_INPUT_DEVICE_NAME}"
 }
 
 
