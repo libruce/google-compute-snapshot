@@ -113,14 +113,12 @@ getInstanceZone()
 
 getDeviceList()
 {
-    if [ $2 != "" ]; then
+    if [[ $2 != "" ]]; then
       logTime "device name: $2"
       echo "$(gcloud compute disks list --filter=name:$2 --format='value(name)')"
     else
       echo "$(gcloud compute disks list --filter users~$1 --format='value(name)')"
     fi
-    # echo "$(gcloud compute disks list --filter=name:prod-app-new-disc)"
-
 }
 
 
