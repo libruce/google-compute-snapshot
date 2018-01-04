@@ -37,7 +37,7 @@ usage() {
 
 setScriptOptions()
 {
-    while getopts ":d:n:" o; do
+    while getopts ":dn:" o; do
       case "${o}" in
         d)
           opt_d=${OPTARG}
@@ -108,16 +108,18 @@ getInstanceZone()
 # RETURNS LIST OF DEVICES
 #
 # input: ${INSTANCE_NAME}
+# input: ${DEVICE_NAME}
 #
 
 getDeviceList()
 {
-    if [ USER_INPUT_DEVICE_NAME != "" ]; then
+    if [ $2 == "" ]; then
       echo "$(gcloud compute disks list --filter users~$1 --format='value(name)')"
     else
-      echo "$(gcloud compute disks list --filter='name:${USER_INPUT_DEVICE_NAME}')"
+      echo "$(gcloud compute disks list --filter=name:$2)"
+      logTime "device name: $2"
     fi
-    logtime "device name: ${USER_INPUT_DEVICE_NAME}"
+
 }
 
 
@@ -287,7 +289,7 @@ createSnapshotWrapper()
     INSTANCE_ZONE=$(getInstanceZone)
 
     # get a list of all the devices
-    DEVICE_LIST=$(getDeviceList ${INSTANCE_NAME})
+    DEVICE_LIST=$(getDeviceList ${INSTANCE_NAME} ${USER_INPUT_DEVICE_NAME})
 
     # create the snapshots
     echo "${DEVICE_LIST}" | while read DEVICE_NAME
