@@ -23,6 +23,9 @@ usage() {
   echo -e "\nOptions:\n"
   echo -e "    -d    Number of days to keep snapshots.  Snapshots older than this number deleted."
   echo -e "          Default if not set: 7 [OPTIONAL]"
+  echo -e "\nOptions:\n"
+  echo -e "    -n    Name of device to create snapshots based on."
+  echo -e "          Default if not set: null, all devices will be backed up"
   echo -e "\n"
   exit 1
 }
@@ -34,7 +37,7 @@ usage() {
 
 setScriptOptions()
 {
-    while getopts ":d:" o; do
+    while getopts ":d:n:" o; do
       case "${o}" in
         d)
           opt_d=${OPTARG}
