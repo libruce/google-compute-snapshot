@@ -39,6 +39,9 @@ setScriptOptions()
         d)
           opt_d=${OPTARG}
           ;;
+        n)
+          opt_n=${OPTARG}
+          ;;
 
         *)
           usage
@@ -51,6 +54,12 @@ setScriptOptions()
       OLDER_THAN=$opt_d
     else
       OLDER_THAN=7
+    fi
+
+    if [[ -n $opt_n ]];then
+      USER_INPUT_DEVICE_NAME=$opt_n
+    else
+      USER_INPUT_DEVICE_NAME=""
     fi
 }
 
@@ -100,7 +109,11 @@ getInstanceZone()
 
 getDeviceList()
 {
-    echo "$(gcloud compute disks list --filter users~$1 --format='value(name)')"
+    if [ USER_INPUT_DEVICE_NAME != "" ]; then
+      echo "$(gcloud compute disks list --filter users~$1 --format='value(name)')"
+    else
+      echo "$(gcloud compute disks list --filter='name:USER_INPUT_DEVICE_NAME')"
+    fi
 }
 
 
@@ -189,7 +202,7 @@ getSnapshotCreatedDate()
 
     #  format date
     echo -e "$(date -d ${snapshot_datetime%?????} +%Y%m%d)"
-    
+
     # Previous Method of formatting date, which caused issues with older Centos
     #echo -e "$(date -d ${snapshot_datetime} +%Y%m%d)"
 }
@@ -276,7 +289,7 @@ createSnapshotWrapper()
     echo "${DEVICE_LIST}" | while read DEVICE_NAME
     do
         # create snapshot name
-        SNAPSHOT_NAME=$(createSnapshotName ${DEVICE_NAME} ${INSTANCE_ID} ${DATE_TIME})        
+        SNAPSHOT_NAME=$(createSnapshotName ${DEVICE_NAME} ${INSTANCE_ID} ${DATE_TIME})
 
         # create the snapshot
         OUTPUT_SNAPSHOT_CREATION=$(createSnapshot ${DEVICE_NAME} ${SNAPSHOT_NAME} ${INSTANCE_ZONE})

@@ -27,7 +27,7 @@ ssh on to the server you wish to have backed up
 **Install Script**: Download the latest version of the snapshot script and make it executable:
 ```
 cd ~
-wget https://raw.githubusercontent.com/jacksegal/google-compute-snapshot/master/gcloud-snapshot.sh
+wget https://raw.githubusercontent.com/libruce/google-compute-snapshot/master/gcloud-snapshot.sh
 chmod +x gcloud-snapshot.sh
 sudo mkdir -p /opt/google-compute-snapshot
 sudo mv gcloud-snapshot.sh /opt/google-compute-snapshot/
@@ -48,8 +48,8 @@ Please note: the above command sends the output to a log file: `/var/log/cron/sn
 **Manage CRON Output**: You should then create a directory for all cron outputs and add it to logrotate:
 
 - Create new directory:
-``` 
-sudo mkdir /var/log/cron 
+```
+sudo mkdir /var/log/cron
 ```
 - Create empty file for snapshot log:
 ```
@@ -81,8 +81,8 @@ sudo nano /etc/logrotate.d/cron
 By default snapshots will be kept for 7 days, however they can be kept for longer / shorter, by using the the -d flag:
 
     Usage: ./snapshot.sh [-d <days>]
-    
+
     Options:
-    
+
        -d  Number of days to keep snapshots. Snapshots older than this number deleted.
            Default if not set: 7 [OPTIONAL]
